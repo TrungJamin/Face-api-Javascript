@@ -12,10 +12,11 @@ async function start() {
   document.body.append(container);
   // Lấy toàn bộ dữ liệu gương mặt của các user
   const labeledFaceDescriptors = await loadLabeledImages();
+  console.log(labeledFaceDescriptors);
 
   // Độ chính xác 60%
   const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
-  let image;
+  let image; // dang len 10 nguoi
   let canvas;
   console.log(faceMatcher);
   document.body.append("Loaded");
@@ -39,12 +40,17 @@ async function start() {
       .withFaceLandmarks()
       .withFaceDescriptors();
     console.log(detections);
+
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     console.log(resizedDetections);
+
     // Bước nhận diện
     const results = resizedDetections.map((d) => {
-      console.log(faceMatcher.findBestMatch(d.descriptor)); // {_label: "Tony Stark", _distance: 0.5715871892946531} label => user id
+      // 10 thangg
+
+      // 4 thang
+      console.log(faceMatcher.findBestMatch(d.descriptor)); // {_label: "Tony Stark", _distance: 0.5715871892946531} label => user id,
       return faceMatcher.findBestMatch(d.descriptor);
     });
     // Trả về kết quả các gương mặt quét được trong ảnh
@@ -61,11 +67,12 @@ async function start() {
 
 function loadLabeledImages() {
   const labels = ["Anh Duc", "Hariwon", "Tran Thanh", "Trinh Thang Binh"];
+
   // *Tìm hiểu về Promise.all();*
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      for (let i = 1; i <= 2; i++) {
+      for (let i = 1; i <= 3; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Trungjamin/Face-api-Javascript/master/labeled_images/${label}/${i}.jpg`
         );
