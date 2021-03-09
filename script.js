@@ -66,13 +66,21 @@ async function start() {
 }
 
 function loadLabeledImages() {
+<<<<<<< HEAD
   const labels = ["Anh Duc", "Hariwon", "Tran Thanh", "Trinh Thang Binh"];
 
+=======
+  const labels = ["Huy"];
+>>>>>>> da212dc4d660be170096cc19f5626b400b311ee8
   // *Tìm hiểu về Promise.all();*
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
+<<<<<<< HEAD
       for (let i = 1; i <= 3; i++) {
+=======
+      for (let i = 1; i <= 61; i++) {
+>>>>>>> da212dc4d660be170096cc19f5626b400b311ee8
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Trungjamin/Face-api-Javascript/master/labeled_images/${label}/${i}.jpg`
         );
