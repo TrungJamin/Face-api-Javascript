@@ -15,7 +15,7 @@ async function start() {
   console.log(labeledFaceDescriptors);
 
   // Độ chính xác 60%
-  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
+  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
   let image; // dang len 10 nguoi
   let canvas;
   console.log(faceMatcher);
@@ -66,23 +66,38 @@ async function start() {
 }
 
 function loadLabeledImages() {
-  const labels = ["Huy2"];
+  const labels = [
+    "Anh Duc",
+    "Tran Thanh",
+    "Trinh Thang Binh",
+    "Hariwon",
+    "Thor",
+    "Captain America",
+    "Tony Stark",
+    "Hawkeye",
+  ];
   // *Tìm hiểu về Promise.all();*
+
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      for (let i = 1; i <= 10; i++) {
-        const img = await faceapi.fetchImage(
-          `https://raw.githubusercontent.com/Trungjamin/Face-api-Javascript/master/labeled_images/${label}/${i}.jpg`
-        );
-        const detections = await faceapi
-          .detectSingleFace(img)
-          .withFaceLandmarks()
-          .withFaceDescriptor();
-        if (typeof detections !== "undefined") {
-          descriptions.push(detections.descriptor);
+      for (let i = 1; i <= 3; i++) {
+        try {
+          const img = await faceapi.fetchImage(
+            `https://raw.githubusercontent.com/Trungjamin/Face-api-Javascript/master/labeled_images/${label}/${i}.jpg`
+          );
+
+          const detections = await faceapi
+            .detectSingleFace(img)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+          if (typeof detections !== "undefined") {
+            descriptions.push(detections.descriptor);
+          }
+          console.log(detections);
+        } catch (error) {
+          console.log(error);
         }
-        console.log(detections);
       }
       console.log(descriptions);
       return new faceapi.LabeledFaceDescriptors(label, descriptions);
