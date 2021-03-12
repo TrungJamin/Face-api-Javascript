@@ -15,7 +15,7 @@ async function start() {
   console.log(labeledFaceDescriptors);
 
   // Độ chính xác 60%
-  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
+  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
   let image; // dang len 10 nguoi
   let canvas;
   console.log(faceMatcher);
