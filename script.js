@@ -15,7 +15,7 @@ async function start() {
   console.log(labeledFaceDescriptors);
 
   // Độ chính xác 60%
-  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
+  const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.7);
   let image; // dang len 10 nguoi
   let canvas;
   console.log(faceMatcher);
@@ -67,17 +67,18 @@ async function start() {
 
 function loadLabeledImages() {
   const labels = [
-    "Trinh Thang Binh",
-    // "Huy2",
+    "Bao Duy",
+    "TruongThanhHuy",
     "Khiem",
-    "Anh Duc",
-    "Tran Thanh",
-
-    "Hariwon",
-    "Thor",
-    "Captain America",
-    "Tony Stark",
-    "Hawkeye",
+    "Le Trung Hieu",
+    "Han",
+    "Ho Huy",
+    "Huynh Duc Thanh Tuan",
+    "Phan Anh Tuan",
+    "Trung",
+    "Vo Trung Hieu",
+    "Tong Tran Vinh",
+    "Thi Thanh",
   ];
   // *Tìm hiểu về Promise.all();*
 
