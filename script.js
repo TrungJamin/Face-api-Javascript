@@ -68,13 +68,11 @@ async function start() {
 function loadLabeledImages() {
   const labels = [
     "Bao Duy",
-    "TruongThanhHuy",
     "Khiem",
     "Le Trung Hieu",
     "Han",
     "Ho Huy",
     "Huynh Duc Thanh Tuan",
-    "Phan Anh Tuan",
     "Trung",
     "Vo Trung Hieu",
     "Tong Tran Vinh",
