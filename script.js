@@ -70,6 +70,7 @@ function loadLabeledImages() {
   const labels = [
     "Bao Duy",
     "Khiem",
+    "TruongThanhHuy",
     "Le Trung Hieu",
     "Han",
     "Ho Huy",
