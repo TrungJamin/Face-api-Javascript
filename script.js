@@ -67,9 +67,12 @@ async function start() {
 
 function loadLabeledImages() {
   const labels = [
+    "Trinh Thang Binh",
+    // "Huy2",
+    "Khiem",
     "Anh Duc",
     "Tran Thanh",
-    "Trinh Thang Binh",
+
     "Hariwon",
     "Thor",
     "Captain America",
