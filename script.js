@@ -79,6 +79,8 @@ function loadLabeledImages() {
     "Vo Trung Hieu",
     "Tong Tran Vinh",
     "Thi Thanh",
+    "Hung Le",
+    "Le Chi Chung",
   ];
   // *Tìm hiểu về Promise.all();*
 
