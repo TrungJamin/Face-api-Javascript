@@ -13,17 +13,20 @@ async function start() {
   // Lấy toàn bộ dữ liệu gương mặt của các user
   // Cái này e chạy lần đầu, để lấy dữ diệu để chuyển đổi dữ liệu qua JSON để lưu trên Firebase
   // Các lần sau thì không cần chạy nữa.
-  const labeledFaceDescriptors = await loadLabeledImages();
+
+  // const labeledFaceDescriptors = await loadLabeledImages();
 
   // Đoạn ni là em chuyển từ labeledFaceDescriptors => về dạng JSON lưu vào labeledFaceDescriptorsJson
   // Cái ni cũng chạy lần đầu, những lần sau mình lưu đc dữ liệu trên Firebase rồi nên chỉ cần gọi về thôi chị.
-  var labeledFaceDescriptorsJson = labeledFaceDescriptors.map((x) =>
+
+  /*  var labeledFaceDescriptorsJson = labeledFaceDescriptors.map((x) =>
     x.toJSON()
-  );
+  ); */
 
   // Đoạn ni quan trọng nè chị: em chuyển các mảng trong descriptors của từng đối tượng về kiểu Object => tránh lỗi nested Arrays của
   // Firebase
-  var labeledFaceDescriptorsJson = labeledFaceDescriptorsJson.map((person) => {
+
+  /*  var labeledFaceDescriptorsJson = labeledFaceDescriptorsJson.map((person) => {
     // array to Object in descriptors
     person.descriptors = person.descriptors.map((detail) =>
       Object.assign({}, detail)
@@ -32,19 +35,21 @@ async function start() {
     // "array to Object" of descriptors in Objects of array
     person.descriptors = Object.assign({}, person.descriptors);
     return person;
-  });
+  }); */
   // console.log(telabeledFaceDescriptorsJson);
 
   // Ở đây em lưu dữ liệu vào JSON vào  FIREBASE sau khi chuyển đổi ở line 27
-  await db.collection("database").doc("10A1").set({
+  /* await db.collection("FacesDatabase").doc("10A1").set({
     data: labeledFaceDescriptorsJson,
   });
-
+ */
+  // ************************************************************************************************
   // PHẦN NÀY VỀ SAU LÀ PHẦN CHỊ SẼ CHẠY CHO NHỮNG LẦN SAU, chị chỉ cần gọi dữ liệu FIREBASE VỀ THÔI.
   // không cần chạy những câu lệnh trên nữa.
+
   var labeledFaceDescriptorsJson2;
   await db
-    .collection("database")
+    .collection("FacesDatabase")
     .doc("10A1")
     .get()
     .then((doc) => {
@@ -68,6 +73,7 @@ async function start() {
 
   // PHẦN NÀY LÀ MẤU CHỐT: CHỊ CHUYỂN DỮ LIỆU JSON -> KIỂU DỮ LIỆU labeledFaceDescriptors ban đầu để truyền
   // vào faceapi.FaceMatcher, tránh lỗi FaceMatcher.Constructor().
+
   var labeledFaceDescriptors1 = labeledFaceDescriptorsJson2.map((x) =>
     faceapi.LabeledFaceDescriptors.fromJSON(x)
   );
@@ -84,9 +90,11 @@ async function start() {
   imageUpload.addEventListener("change", async () => {
     if (image) image.remove();
     if (canvas) canvas.remove();
+    console.log(imageUpload);
+    console.log(imageUpload.files);
     console.log(imageUpload.files[0]);
     image = await faceapi.bufferToImage(imageUpload.files[0]);
-    console.log(image);
+    console.log("bufferToImage: ", image);
     container.append(image);
     canvas = faceapi.createCanvasFromMedia(image);
     container.append(canvas);
@@ -109,6 +117,7 @@ async function start() {
       return faceMatcher.findBestMatch(d.descriptor);
     });
     // Trả về kết quả các gương mặt quét được trong ảnh
+    console.log(results);
     console.log(results.toString());
     console.log(results[0].label);
     results.forEach((result, i) => {
