@@ -53,20 +53,25 @@ async function start() {
   // };
   // console.log(obj1);
   // console.log(obj2);
-  // /*  await db
-  //   .collection("labeledFaceDescriptors")
-  //   .doc("data")
-  //   .set(Object.assign({}, faceMatcher)); */
+  /*  await db
+    .collection("labeledFaceDescriptors")
+    .doc("data")
+    .set(Object.assign({}, faceMatcher)); */
 
   document.body.append("Loaded");
   imageUpload.addEventListener("change", async () => {
     if (image) image.remove();
     if (canvas) canvas.remove();
-    console.log(imageUpload.files[0]);
-    image = await faceapi.bufferToImage(imageUpload.files[0]);
-    console.log(image);
-    container.append(image);
-    canvas = faceapi.createCanvasFromMedia(image);
+
+    const toBase64 = async (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    image = toBase64(imageUpload.files[0]);
+    canvas = await faceapi.createCanvasFromMedia(image);
     container.append(canvas);
     const displaySize = { width: image.width, height: image.height };
     faceapi.matchDimensions(canvas, displaySize);
@@ -76,7 +81,7 @@ async function start() {
       .detectAllFaces(image)
       .withFaceLandmarks()
       .withFaceDescriptors();
-    console.log(detections);
+    console.log("dectection", detections);
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     console.log(resizedDetections);
