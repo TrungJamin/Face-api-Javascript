@@ -1,9 +1,9 @@
 const imageUpload = document.getElementById("imageUpload");
 
 Promise.all([
-  faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-  faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
+  faceapi.nets.faceRecognitionNet.loadFromUri("./models"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("./models"),
+  faceapi.nets.ssdMobilenetv1.loadFromUri("./models"),
 ]).then(start);
 
 async function start() {
@@ -134,8 +134,42 @@ async function start() {
       const drawBox = new faceapi.draw.DrawBox(box, {
         label: result.toString(),
       });
-      drawBox.draw(canvas);
+      console.log("result2", results);
     });
+    // image = await faceapi.bufferToImage(imageUpload.files[0]);
+    // console.log(image);
+    // container.append(image);
+    // canvas = faceapi.createCanvasFromMedia(image);
+    // container.append(canvas);
+    // const displaySize = { width: image.width, height: image.height };
+    // console.log("size2", displaySize);
+    // faceapi.matchDimensions(canvas, displaySize);
+
+    // // Xác thực các nhân vật trong ảnh chọn lên
+    // const detections = await faceapi
+    //   .detectAllFaces(image)
+    //   .withFaceLandmarks()
+    //   .withFaceDescriptors();
+    // console.log(detections);
+    // const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+    // console.log(resizedDetections);
+
+    // // Bước nhận diện
+    // const results = resizedDetections.map((d) => {
+    //   console.log(faceMatcher.findBestMatch(d.descriptor)); // {_label: "Tony Stark", _distance: 0.5715871892946531} label => user id,
+    //   return faceMatcher.findBestMatch(d.descriptor);
+    // });
+    // // Trả về kết quả các gương mặt quét được trong ảnh
+    // console.log(results.toString());
+    // console.log(results[0].label);
+    // results.forEach((result, i) => {
+    //   const box = resizedDetections[i].detection.box;
+    //   const drawBox = new faceapi.draw.DrawBox(box, {
+    //     label: result.toString(),
+    //   });
+    //   drawBox.draw(canvas);
+    // });
   });
 }
 
