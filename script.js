@@ -14,19 +14,19 @@ async function start() {
   // Cái này e chạy lần đầu, để lấy dữ diệu để chuyển đổi dữ liệu qua JSON để lưu trên Firebase
   // Các lần sau thì không cần chạy nữa.
 
-  // const labeledFaceDescriptors = await loadLabeledImages();
+  const labeledFaceDescriptors = await loadLabeledImages();
 
   // Đoạn ni là em chuyển từ labeledFaceDescriptors => về dạng JSON lưu vào labeledFaceDescriptorsJson
   // Cái ni cũng chạy lần đầu, những lần sau mình lưu đc dữ liệu trên Firebase rồi nên chỉ cần gọi về thôi chị.
 
-  /*  var labeledFaceDescriptorsJson = labeledFaceDescriptors.map((x) =>
+  var labeledFaceDescriptorsJson = labeledFaceDescriptors.map((x) =>
     x.toJSON()
-  ); */
+  );
 
   // Đoạn ni quan trọng nè chị: em chuyển các mảng trong descriptors của từng đối tượng về kiểu Object => tránh lỗi nested Arrays của
   // Firebase
 
-  /*  var labeledFaceDescriptorsJson = labeledFaceDescriptorsJson.map((person) => {
+  var labeledFaceDescriptorsJson = labeledFaceDescriptorsJson.map((person) => {
     // array to Object in descriptors
     person.descriptors = person.descriptors.map((detail) =>
       Object.assign({}, detail)
@@ -35,14 +35,14 @@ async function start() {
     // "array to Object" of descriptors in Objects of array
     person.descriptors = Object.assign({}, person.descriptors);
     return person;
-  }); */
+  });
   // console.log(telabeledFaceDescriptorsJson);
 
   // Ở đây em lưu dữ liệu vào JSON vào  FIREBASE sau khi chuyển đổi ở line 27
-  /* await db.collection("FacesDatabase").doc("10A1").set({
+  await db.collection("DatabaseFaces").doc("10A1").set({
     data: labeledFaceDescriptorsJson,
   });
- */
+  console.log("labeledFaceDescriptorsJson: ", labeledFaceDescriptorsJson);
   // ************************************************************************************************
   // PHẦN NÀY VỀ SAU LÀ PHẦN CHỊ SẼ CHẠY CHO NHỮNG LẦN SAU, chị chỉ cần gọi dữ liệu FIREBASE VỀ THÔI.
   // không cần chạy những câu lệnh trên nữa.
@@ -92,12 +92,19 @@ async function start() {
     if (canvas) canvas.remove();
     console.log(imageUpload);
     console.log(imageUpload.files);
-    console.log(imageUpload.files[0]);
+    console.log("imageUpload.data: ", imageUpload.data);
+
+    console.log("imageUpload.files[0]: ", imageUpload.files[0]);
     image = await faceapi.bufferToImage(imageUpload.files[0]);
     console.log("bufferToImage: ", image);
+
     container.append(image);
+    // let img = await faceapi.fetchImage(image);
+    console.log("base 64: ", image.src);
     canvas = faceapi.createCanvasFromMedia(image);
+
     container.append(canvas);
+
     const displaySize = { width: image.width, height: image.height };
     faceapi.matchDimensions(canvas, displaySize);
 
@@ -106,16 +113,18 @@ async function start() {
       .detectAllFaces(image)
       .withFaceLandmarks()
       .withFaceDescriptors();
-    console.log(detections);
+    console.log("detections: ", detections);
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     console.log(resizedDetections);
+    console.log("resizedDetections: ", resizedDetections);
 
     // Bước nhận diện
     const results = resizedDetections.map((d) => {
       console.log(faceMatcher.findBestMatch(d.descriptor)); // {_label: "Tony Stark", _distance: 0.5715871892946531} label => user id,
       return faceMatcher.findBestMatch(d.descriptor);
     });
+
     // Trả về kết quả các gương mặt quét được trong ảnh
     console.log(results);
     console.log(results.toString());
@@ -133,18 +142,18 @@ async function start() {
 function loadLabeledImages() {
   // 10A1
   const labels = [
-    "Khiem",
-    "Bao Duy",
-    "Han",
-    "Hung Le",
-    "Huynh Duc Thanh Tuan",
-    "Thi Thanh",
-    "Trung",
-    "TruongThanhHuy",
-    "Vo Trung Hieu",
-    "Ngo Quoc Thinh",
-    "Ho Huy",
-    "Le Trung Hieu",
+    "2021010A12",
+    "2021010A123",
+    "2021010A124",
+    "2021010A125",
+    "2021010A126",
+    "2021010A127",
+    "2021010A128",
+    "2021010A117",
+    "2021010A129",
+    "2021010A130",
+    "2021010A131",
+    "2021010A132",
   ];
   // *Tìm hiểu về Promise.all();*
 
